@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Database\Factories\AuthorFactory;
+use Database\Factories\BookFactory;
+use Database\Factories\CategoryFactory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,11 +15,26 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
 
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'alex',
+            'email' => 'admin@admin.com',
         ]);
+
+        AuthorFactory::new()
+            ->count(5)
+            ->create()
+            ->each(function ($author) {
+                $books = BookFactory::new()
+                    ->count(random_int(1, 5))
+                    ->create()
+                    ->each(function ($book) {
+                        $category = CategoryFactory::new()->create();
+                        $book->categories()->attach($category);
+                    });
+
+                $author->books()
+                    ->attach($books);
+            });
     }
 }
