@@ -21,9 +21,9 @@ class AuthorController extends Controller
         $authors = Author::where('first_name','like',"%{$search}%")
             ->orWhere('last_name','like',"%{$search}%")
             ->with('country:id,country', 'books:title')
-            ->cursorPaginate(10);
+            ->paginate(10);
 
-        return inertia('Authors/Index',compact('authors', 'countries'));
+        return inertia('Authors/Index');
     }
 
     /**

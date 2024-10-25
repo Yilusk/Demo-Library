@@ -10,10 +10,10 @@
     "/build/assets/DeleteUserForm-Cf1ISM5t.js"
   ],
   "resources/js/Components/Dropdown.vue": [
-    "/build/assets/AuthenticatedLayout-BB07ei95.js"
+    "/build/assets/AuthenticatedLayout-DNE-sTqU.js"
   ],
   "resources/js/Components/DropdownLink.vue": [
-    "/build/assets/AuthenticatedLayout-BB07ei95.js"
+    "/build/assets/AuthenticatedLayout-DNE-sTqU.js"
   ],
   "resources/js/Components/InputError.vue": [
     "/build/assets/TextInput-3fXQebOV.js"
@@ -25,16 +25,16 @@
     "/build/assets/DeleteUserForm-Cf1ISM5t.js"
   ],
   "resources/js/Components/NavLink.vue": [
-    "/build/assets/AuthenticatedLayout-BB07ei95.js"
+    "/build/assets/AuthenticatedLayout-DNE-sTqU.js"
   ],
   "resources/js/Components/Pagination.vue": [
-    "/build/assets/Index-DzBqrKgb.js"
+    "/build/assets/Index-C6gWCYZd.js"
   ],
   "resources/js/Components/PrimaryButton.vue": [
     "/build/assets/PrimaryButton-BXx9Plxv.js"
   ],
   "resources/js/Components/ResponsiveNavLink.vue": [
-    "/build/assets/AuthenticatedLayout-BB07ei95.js"
+    "/build/assets/AuthenticatedLayout-DNE-sTqU.js"
   ],
   "resources/js/Components/SecondaryButton.vue": [
     "/build/assets/DeleteUserForm-Cf1ISM5t.js"
@@ -43,22 +43,22 @@
     "/build/assets/TextInput-3fXQebOV.js"
   ],
   "resources/js/Layouts/AuthenticatedLayout.vue": [
-    "/build/assets/AuthenticatedLayout-BB07ei95.js"
+    "/build/assets/AuthenticatedLayout-DNE-sTqU.js"
   ],
   "resources/js/Layouts/GuestLayout.vue": [
     "/build/assets/GuestLayout-DTWdGW1h.js"
   ],
   "resources/js/Layouts/Navigation.vue": [
-    "/build/assets/AuthenticatedLayout-BB07ei95.js"
+    "/build/assets/AuthenticatedLayout-DNE-sTqU.js"
   ],
   "resources/js/Layouts/NavigationMobile.vue": [
-    "/build/assets/AuthenticatedLayout-BB07ei95.js"
+    "/build/assets/AuthenticatedLayout-DNE-sTqU.js"
   ],
   "resources/js/Layouts/TopMenu.vue": [
-    "/build/assets/AuthenticatedLayout-BB07ei95.js"
+    "/build/assets/AuthenticatedLayout-DNE-sTqU.js"
   ],
   "resources/js/Pages/About.vue": [
-    "/build/assets/About-Dj5YgqhW.js"
+    "/build/assets/About-DY22hSCH.js"
   ],
   "resources/js/Pages/Auth/ConfirmPassword.vue": [
     "/build/assets/ConfirmPassword-BZcBrUOh.js"
@@ -78,11 +78,23 @@
   "resources/js/Pages/Auth/VerifyEmail.vue": [
     "/build/assets/VerifyEmail-CtM_1Nwy.js"
   ],
+  "resources/js/Pages/Authors/Index.vue": [
+    "/build/assets/Index-CTdesTPN.js"
+  ],
+  "resources/js/Pages/Books/Index.vue": [
+    "/build/assets/Index-C5iNt9-b.js"
+  ],
+  "resources/js/Pages/Categories/Index.vue": [
+    "/build/assets/Index-Cx81MUdE.js"
+  ],
+  "resources/js/Pages/Countries/Index.vue": [
+    "/build/assets/Index-5IlSkya4.js"
+  ],
   "resources/js/Pages/Dashboard.vue": [
-    "/build/assets/Dashboard-CoIBeGLJ.js"
+    "/build/assets/Dashboard-DLddvc5Z.js"
   ],
   "resources/js/Pages/Profile/Edit.vue": [
-    "/build/assets/Edit-BRvpZxFU.js"
+    "/build/assets/Edit-eN_EyNom.js"
   ],
   "resources/js/Pages/Profile/Partials/DeleteUserForm.vue": [
     "/build/assets/DeleteUserForm-Cf1ISM5t.js"
@@ -94,7 +106,7 @@
     "/build/assets/UpdateProfileInformationForm-BXOok1bX.js"
   ],
   "resources/js/Pages/Users/Index.vue": [
-    "/build/assets/Index-DzBqrKgb.js"
+    "/build/assets/Index-C6gWCYZd.js"
   ],
   "resources/js/Pages/Welcome.vue": [
     "/build/assets/Welcome-DMaBece4.js"

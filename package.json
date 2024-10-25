@@ -19,6 +19,8 @@
         "vue": "^3.4.0"
     },
     "dependencies": {
-        "@vue/server-renderer": "^3.5.12"
+        "@primevue/themes": "^4.1.1",
+        "@vue/server-renderer": "^3.5.12",
+        "primevue": "^4.1.1"
     }
 }
