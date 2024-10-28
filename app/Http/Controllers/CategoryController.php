@@ -14,11 +14,22 @@ class CategoryController extends Controller
      */
     public function index()
     {
+        $search = request()->search ?? '';
+
         $categories = Category::query()
-            ->select('id','category')
-            ->orderBy('category')
-            ->get();
-        return inertia('Categories/Index',compact('categories'));
+            ->orderBy('created_at','desc')
+            ->filter(request()->only('search'))
+            ->paginate(3)
+            ->withQueryString()
+            ->through(fn($category) => [
+                'id' => $category->id,
+                'category' => $category->category
+            ]);
+
+        return inertia('Categories/Index', [
+            'categories' => $categories,
+            'searchTerm' => $search
+        ]);
     }
 
     /**
@@ -39,7 +50,7 @@ class CategoryController extends Controller
         // store
         Category::create($data);
         // redirect
-        return redirect()->route('categories.index')->with('success', 'Category created successfully');
+        return back();
     }
 
     /**
@@ -68,7 +79,7 @@ class CategoryController extends Controller
         // update
         $category->update($data);
         // redirect
-        return redirect()->route('categories.index')->with('success', 'Category updated successfully');
+        return back();
     }
 
     /**
@@ -77,6 +88,6 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-        return redirect()->route('categories.index')->with('success', 'Category deleted successfully');
+        return back();
     }
 }

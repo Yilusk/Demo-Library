@@ -14,11 +14,23 @@ class CountryController extends Controller
      */
     public function index()
     {
+        $search = request()->search ?? '';
+
         $countries = Country::query()
-            ->select('id','country')
             ->orderBy('country')
-            ->get();
-        return inertia('Countries/Index',compact('countries'));
+            ->filter(request()->only('search'))
+            ->paginate(3)
+            ->withQueryString()
+            ->through(fn($country) => [
+                'id' => $country->id,
+                'country' => $country->country
+            ]);
+
+        return inertia('Countries/Index', [
+            'countries' => $countries,
+            'searchTerm' => $search,
+
+        ]);
     }
 
     /**
@@ -39,7 +51,7 @@ class CountryController extends Controller
         // store
         Country::create($data);
         // redirect
-        return redirect()->route('countries.index')->with('success', 'Country created successfully');
+        return back();
     }
 
     /**
@@ -68,7 +80,7 @@ class CountryController extends Controller
         // update
         $country->update($data);
         // redirect
-        return redirect()->route('countries.index')->with('success', 'Country updated successfully');
+        return back();
     }
 
     /**
@@ -77,6 +89,6 @@ class CountryController extends Controller
     public function destroy(Country $country)
     {
         $country->delete();
-        return redirect()->route('countries.index')->with('success', 'Country deleted successfully');
+        return back();
     }
 }

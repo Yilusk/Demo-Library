@@ -10,9 +10,8 @@ import { Head } from '@inertiajs/vue3';
 		<template #header>
 			Authors List
 		</template>
-		
 		<div class="p-4 bg-white rounded-lg shadow-xs">
-			You're logged in!
+			make table
 		</div>
 	</AuthenticatedLayout>
 </template>

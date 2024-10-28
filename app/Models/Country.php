@@ -15,4 +15,12 @@ class Country extends Model
     public function authors(){
         return $this->hasMany(Author::class);
     }
+
+    public function scopeFilter($query, array $filters){
+        $query->when($filters['search'] ?? null, function($query, $search){
+            $query->where('country', 'like', '%'.$search.'%');
+        });
+    }
+
+
 }
