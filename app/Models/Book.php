@@ -29,4 +29,17 @@ class Book extends Model
     {
         return $this->belongsToMany(Category::class);
     }
+
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['search'] ?? null, function ($query, $search) {
+            $query->where('title', 'like', '%' . $search . '%')
+                ->orWhere('publisher', 'like', '%' . $search . '%')
+                ->orWhere('release_date', 'like', '%' . $search . '%')
+                ->orWhere('pages', 'like', '%' . $search . '%')
+                ->orWhereHas('authors', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                });
+        });
+    }
 }
