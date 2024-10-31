@@ -30,8 +30,8 @@ class StoreBookRequest extends FormRequest
             'release_date' => ['required','date'],
             'pages' => ['required','numeric'],
             'image' => ['nullable','file','mimes:jpg,jpeg,png'],
-            'authors' => ['required','array'],
-            'categories' => ['required','array'],
+            'authors' => ['nullable','array'],
+            'categories' => ['nullable','array'],
         ];
     }
 }
