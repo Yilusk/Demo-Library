@@ -33,7 +33,8 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('authors', AuthorController::class);
     Route::resource('categories', CategoryController::class);
-    Route::resource('books', BookController::class);
+    Route::resource('books', BookController::class)->except('update') ;
+    Route::post('books/{book}',[BookController::class, 'update'])->name('books.update');
     Route::resource('countries', CountryController::class);
 });
 
