@@ -1,18 +1,14 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import Form from './Form.vue';
+
+const props = defineProps({
+	authors: Object,
+	categories: Object
+})
+
 </script>
 
 <template>
-	<Head title="Books" />
-	
-	<AuthenticatedLayout>
-		<template #header>
-			Books Create
-		</template>
-		
-		<div class="p-4 bg-white rounded-lg shadow-xs">
-			You're logged in!
-		</div>
-	</AuthenticatedLayout>
+	<Form :authors="authors"
+				:categories="categories"/>
 </template>
