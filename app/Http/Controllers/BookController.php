@@ -8,6 +8,7 @@ use App\Models\Author;
 use App\Models\Book;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
@@ -16,37 +17,27 @@ class BookController extends Controller
      */
     public function index(Request $request)
     {
-        // ver el uso de LazyById en la consulta
-        // y entregar todos los datos de la tabla de forma directa
-        // sin hacer consultas adicionales
-        // el filtrado se usaria por primevue
-
-
-        // filter by search value | more kbs transfer
-        // $books = Book::where('title', 'like', "%{$search}%")
-        //     ->orWhere('description', 'like', "%{$search}%")
-        //     ->orWhere('isbn', 'like', "%{$search}%")
-        //     ->orderBy('created_at', 'desc')
-        //     ->get();
-
+        $search = request()->search ?? '';
         $books = Book::query()
-        ->select('id','title','pages','isbn','publisher','release_date')
-        ->toBase()
-        ->lazyById(10000);
+        ->orderBy('created_at','desc')
+        ->with('authors:id,name,last_name', 'categories')
+        ->filter($request->only('search'))
+        ->paginate(3)
+        ->withQueryString()
+        ->through(fn($book) => [
+            'id' => $book->id,
+            'title' => $book->title,
+            'publisher' => $book->publisher,
+            'release_date' => $book->release_date,
+            'authors' => $book->authors ?? null,
+            'categories' => $book->categories ?? null
+        ]);
+        
 
-
-        // check for times
-        // test with book::where and with a lazyById implementation and with tobase() and lazyById
-        // dd(
-        //     'Books count:' . $books->count(),
-        //     'Memory Taken: ' . round((memory_get_peak_usage(true) / 1024 / 1024), 2) . ' MB',
-        //     'Time Taken: ' . round((microtime(true) - LARAVEL_START), 2) . ' seconds',
-        //     'Resource cost: ' . round(microtime(2) - LARAVEL_START, 2) * round(memory_get_peak_usage() / 1024 / 1024, 2)
-        // );
-
-
-
-        return inertia('Books/Index', compact('books'));
+        return inertia('Books/Index', [
+            'books' => $books,
+            'searchTerm' => $search
+        ]);
     }
 
     /**
@@ -54,7 +45,7 @@ class BookController extends Controller
      */
     public function create()
     {
-        $authors = Author::all();
+        $authors = Author::select('id', 'name', 'last_name')->get();
         $categories = Category::all();
         return inertia('Books/Create', compact('authors', 'categories'));
     }
@@ -79,7 +70,7 @@ class BookController extends Controller
         $book->categories()->sync($data['categories']);
 
         // redirect
-        return redirect()->route('books.index')->with('success', 'Book created successfully');
+        return back();
     }
 
     /**
@@ -100,7 +91,7 @@ class BookController extends Controller
     public function edit(Book $book)
     {
         return inertia('Books/Edit', [
-            'authors' => Author::all(),
+            'authors' => Author::select('id', 'name', 'last_name')->get(),
             'categories' => Category::all(),
             'book' => $book,
             'authorsOfBook' => $book->authors,
@@ -115,17 +106,30 @@ class BookController extends Controller
     {
         // validate
         $data = $request->validated();
+
+        // mantain image
+        $data['image'] = $book->image;
+
+        
         // check if image is uploaded
-        if ($request->hasFile('image')) {
+        if ($request->file('image')) {
+            // delete old image
+            if ($book->image) {
+                Storage::disk('public')->delete($book->image);
+            }
             $data['image'] = $request->file('image')->store('images', 'public');
         }
+
+
         // update
         $book->update($data);
         // sync
         $book->authors()->sync($data['authors']);
         $book->categories()->sync($data['categories']);
+
+
         // redirect
-        return redirect()->route('books.index')->with('success', 'Book updated successfully');
+        return to_route('books.edit', $book);
     }
 
     /**
