@@ -39,7 +39,11 @@ class Book extends Model
                 ->orWhere('pages', 'like', '%' . $search . '%')
                 ->orWhereHas('authors', function ($query) use ($search) {
                     $query->where('name', 'like', '%' . $search . '%');
-                });
+                })
+                ->orWhereHas('categories', function ($query) use ($search){
+                    $query->where('category', 'like', '%' . $search . '%');
+                })
+                ;
         });
     }
 }
