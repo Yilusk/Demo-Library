@@ -4,12 +4,14 @@ import PaginationLinks from '@/Components/PaginationLinks.vue';
 import SearchFilter from '@/Components/SearchFilter.vue';
 import InputError from '@/Components/InputError.vue';
 import { Head, useForm } from '@inertiajs/vue3';
-import InputText from 'primevue/inputtext';
-import Dialog from 'primevue/dialog';
-import Button from 'primevue/button';
-import { ref } from 'vue';
 import { useToast } from 'primevue/usetoast';
+import InputText from 'primevue/inputtext';
+import DataTable from 'primevue/datatable';
+import Dialog from 'primevue/dialog';
+import Column from 'primevue/column';
+import Button from 'primevue/button';
 import Toast from 'primevue/toast';
+import { ref } from 'vue';
 
 const props = defineProps({
 	countries: Object,
@@ -30,7 +32,6 @@ const showFormModal = ref(false)
 const showDeleteModal = ref(false)
 
 const title = ref('')
-const description = ref('')
 const operation = ref(1)
 
 const openFormModal = (option, country) => {
@@ -38,11 +39,9 @@ const openFormModal = (option, country) => {
 	operation.value = option
 	if (option === 1) {
 		title.value = 'Add Country'
-		description.value = 'Add country information.'
 		form.reset()
 	} else {
 		title.value = 'Update Country'
-		description.value = 'Update Country information.'
 		form.country = country.country
 		values.value.id = country.id
 		values.value.country = country.country
@@ -121,37 +120,35 @@ const deleteCountry = () => {
 		</template>
 
 		<div class="p-4 bg-white rounded-lg shadow-xs">
-			<!-- search -->
-			<div class="flex justify-between pb-2">
-				<SearchFilter routeName="countries.index" :searchTerm="searchTerm" />
-				<Button v-model:visible="showFormModal" @click="openFormModal(1)">
-					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-						stroke="currentColor" class="size-6">
-						<path stroke-linecap="round" stroke-linejoin="round"
-							d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-					</svg>
-					<p>New</p>
-				</Button>
-			</div>
 
 			<!-- table -->
 			<div class="relative overflow-hidden shadow-md rounded-lg">
-				<table class="table-fixed w-full text-left">
-					<thead class="uppercase bg-[#6b7280] text-[#e5e7eb]" style="background-color: #6b7280; color: #e5e7eb;">
-						<tr>
-							<th class="py-1  text-center  p-4">Country</th>
-							<th class="py-1  text-center  p-4">Actions</th>
-						</tr>
-					</thead>
-					<tbody class="bg-white text-gray-500" style="background-color: #FFFFFF; color: #6b7280;">
-						<tr v-if="countries.total === 0">
-							<td class=" py-3  text-center  p-4">No Countries Found</td>
-						</tr>
+				<DataTable :value="countries.data" >
+					<template #header>
+						<!-- search -->
+						<div class="flex justify-between pb-2">
+							<SearchFilter routeName="countries.index" :searchTerm="searchTerm" />
+							<Button v-model:visible="showFormModal" @click="openFormModal(1)">
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+									stroke="currentColor" class="size-6">
+									<path stroke-linecap="round" stroke-linejoin="round"
+										d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+								</svg>
+								<p>New</p>
+							</Button>
+						</div>
+					</template>
+					<template #empty>
+						<p>
+							No countries found
+						</p>
+					</template>
 
-						<tr class=" py-3" v-for="country in countries.data" :key="country.id">
-							<td class=" py-3  text-center  p-4">{{ country.country }}</td>
-							<td class=" py-3  text-center  p-4">
-								<Button @click="openFormModal(2, country)" type="button" severity="warn">
+					<Column field="country" header="Country" />
+					<Column header="Actions">
+						<template #body="{ data }">
+							<div class="flex gap-2">
+								<Button @click="openFormModal(2, data)" type="button" severity="warn">
 									<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 										stroke="currentColor" class="size-6">
 										<path stroke-linecap="round" stroke-linejoin="round"
@@ -165,21 +162,18 @@ const deleteCountry = () => {
 											d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
 									</svg>
 								</Button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				<!-- Pagination Links -->
-				<div
-					class="px-4 py-2 text-xs font-semibold tracking-wide text-gray-500 uppercase bg-gray-50 border-t sm:grid-cols-9">
-					<PaginationLinks :links="countries.links" :paginator="countries" />
-				</div>
+							</div>
+						</template>
+					</Column>
+					<template #footer>
+						<PaginationLinks :links="countries.links" :paginator="countries" />
+					</template>
+				</DataTable>
 			</div>
 		</div>
 		<!-- Form -->
 		<Dialog v-model:visible="showFormModal" modal :header="title">
 			<form @submit.prevent="save">
-				<span class="text-surface-500 dark:text-surface-400 block mb-8">{{ description }}</span>
 				<div class="flex items-center gap-4 mb-4">
 					<label for="country" class="font-semibold w-24">Country</label>
 					<InputText id="country" class="flex-auto" v-model="form.country" :invalid="form.errors.country" autofocus />
