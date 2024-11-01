@@ -1,18 +1,18 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import InputError from '@/Components/InputError.vue';
 import { Head, useForm } from '@inertiajs/vue3';
+import MultiSelect from 'primevue/multiselect';
 import NavLink from '@/Components/NavLink.vue';
+import FileUpload from 'primevue/fileupload';
 import { useToast } from 'primevue/usetoast';
+import DatePicker from 'primevue/datepicker';
 import InputText from 'primevue/inputtext';
 import IftaLabel from 'primevue/iftalabel';
-import MultiSelect from 'primevue/multiselect';
-import FileUpload from 'primevue/fileupload';
-import Card from 'primevue/card';
-import DatePicker from 'primevue/datepicker';
 import Button from 'primevue/button';
 import Toast from 'primevue/toast';
+import Card from 'primevue/card';
 import { ref } from 'vue';
-import InputError from '@/Components/InputError.vue';
 
 const props = defineProps({
   book: Object,
@@ -46,7 +46,6 @@ props.categories.map((row) => {
   })
 })
 
-
 props.authors.map((row) => {
   authorOptions.value.push({
     id: row.id,
@@ -71,7 +70,6 @@ if (props.book != null) {
 const toast = useToast()
 const previousImage = ref(props.book == null ? null : props.book.image)
 const titleForm = ref(props.book == null ? 'Create Book' : 'Edit Book')
-
 
 const src = ref(null);
 
@@ -211,7 +209,6 @@ const save = () => {
                 </div>
                 <FileUpload mode="basic" @select="onFileSelect" customUpload auto severity="secondary"
                   class="p-button-outlined mb-3" />
-
                 <InputError>{{ form.errors.image }}</InputError>
               </IftaLabel>
             </div>
@@ -219,7 +216,6 @@ const save = () => {
               <Button label="Save" type="submit" severity="success"
                 class="w-56 max-md:w-full max-sm:w-full max-lg:w-full max-xl:w-full mt-5" />
             </div>
-
           </form>
         </template>
       </Card>
