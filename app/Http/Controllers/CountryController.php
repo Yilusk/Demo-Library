@@ -34,14 +34,6 @@ class CountryController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(StoreCountryRequest $request)
@@ -52,22 +44,6 @@ class CountryController extends Controller
         Country::create($data);
         // redirect
         return back();
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Country $country)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Country $country)
-    {
-        //
     }
 
     /**
