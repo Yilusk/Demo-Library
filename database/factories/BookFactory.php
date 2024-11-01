@@ -21,7 +21,7 @@ class BookFactory extends Factory
             'title' => fake()->sentence(),
             'description' => fake()->text(100),
             'publisher' => fake()->company(),
-            'release_date' => fake()->date(),
+            'release_date' => fake()->date('Y-m-d'),
             'pages' => fake()->numberBetween(50,1000),
             'image' => fake()->imageUrl(90, 90, 'nature', true)
         ];
