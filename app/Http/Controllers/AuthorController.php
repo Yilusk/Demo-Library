@@ -13,25 +13,31 @@ class AuthorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->input('search','');
+        $search = request()->search ?? '';
         $countries = Country::all();
 
-        $authors = Author::where('first_name','like',"%{$search}%")
-            ->orWhere('last_name','like',"%{$search}%")
-            ->with('country:id,country', 'books:title')
-            ->paginate(10);
-
-        return inertia('Authors/Index');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $authors = Author::query()
+            ->with('country:id,country',
+            'books:id,title,description,publisher,release_date,pages')
+            ->orderBy('created_at','desc')
+            ->filter(request()->only('search'))
+            ->paginate(5)
+            ->withQueryString()
+            ->through(fn($author) => [
+                'id' => $author->id,
+                'name' => $author->name,
+                'last_name' => $author->last_name,
+                'country' => $author->country ?? null,
+                'books' =>  $author->books ?? null
+            ]);
+        
+        return inertia('Authors/Index',[
+            'authors' => $authors,
+            'searchTerm' => $search,
+            'countries' => $countries
+        ]);
     }
 
     /**
@@ -44,23 +50,7 @@ class AuthorController extends Controller
         // store
         Author::create($data);
         // redirect
-        return redirect()->route('authors.index')->with('success', 'Author created successfully');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Author $author)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Author $author)
-    {
-        //
+        return back();
     }
 
     /**
@@ -73,7 +63,7 @@ class AuthorController extends Controller
         // update
         $author->update($data);
         // redirect
-        return redirect()->route('authors.index')->with('success', 'Author updated successfully');
+        return back();
     }
 
     /**
@@ -82,6 +72,6 @@ class AuthorController extends Controller
     public function destroy(Author $author)
     {
         $author->delete();
-        return redirect()->route('authors.index');
+        return back();
     }
 }
