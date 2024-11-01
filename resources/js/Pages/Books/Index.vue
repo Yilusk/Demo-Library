@@ -1,16 +1,17 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, useForm } from '@inertiajs/vue3';
-import Dialog from 'primevue/dialog';
-import Button from 'primevue/button';
-import { ref } from 'vue';
-import SearchFilter from '@/Components/SearchFilter.vue';
 import PaginationLinks from '@/Components/PaginationLinks.vue';
+import SearchFilter from '@/Components/SearchFilter.vue';
+import { Head, useForm } from '@inertiajs/vue3';
 import NavLink from '@/Components/NavLink.vue';
+import ScrollPanel from 'primevue/scrollpanel';
 import { useToast } from 'primevue/usetoast';
-import Toast from 'primevue/toast';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import Dialog from 'primevue/dialog';
+import Button from 'primevue/button';
+import Toast from 'primevue/toast';
+import { ref } from 'vue';
 
 const props = defineProps({
 	books: Object,
@@ -31,16 +32,7 @@ const values = ref({
 const toast = useToast()
 const search = ref(props.searchTerm)
 
-const showDataModal = ref(false)
 const showDeleteModal = ref(false)
-
-const openDataModal = (book) => {
-	showDataModal.value = true
-}
-
-const closeDataModal = () => {
-	showDataModal.value = false
-}
 
 const openDeleteModal = (book) => {
 	showDeleteModal.value = true
@@ -66,9 +58,7 @@ const deleteBook = () => {
 	})
 }
 </script>
-
 <template>
-
 	<Head title="Books" />
 	<AuthenticatedLayout>
 		<Toast />
@@ -91,31 +81,34 @@ const deleteBook = () => {
 					<Column field="title" header="Title" />
 					<Column field="publisher" header="Publisher" />
 					<Column field="release_date" header="Release Date" />
-					<Column field="categories" header="Categories" >
+					<Column field="categories" header="Categories">
 						<template #body="{ data }">
-							<!-- TODO: set fixed space for categories -->
-							<p v-for="category in data.categories" :key="category.id">
+							<ScrollPanel style="width: 100%; height: 70px">
+								<p v-for="category in data.categories" :key="category.id">
 									{{ category.category }}
-							</p>
-							<p v-if="data.categories.length == 0">
-								Uncategorized
-							</p>
+
+								</p>
+								<p v-if="data.categories.length == 0">
+									Uncategorized
+								</p>
+							</ScrollPanel>
 						</template>
 					</Column>
 					<Column field="authors" header="Authors">
 						<template #body="{ data }">
-							<!-- TODO: set fixed space for authors -->
-							<p v-for="author in data.authors" :key="author.id">
+							<ScrollPanel style="width: 100%; height: 70px">
+								<p v-for="author in data.authors" :key="author.id">
 									{{ author.name }}
-							</p>
-							<p v-if="data.authors.length == 0">
-								Not Found
-							</p>
+								</p>
+								<p v-if="data.authors.length == 0">
+									Not Found
+								</p>
+							</ScrollPanel>
 						</template>
 					</Column>
 					<Column header="Actions">
 						<template #body="{ data }">
-							<div class="flex justify-center">
+							<div class="flex">
 								<!-- show -->
 								<NavLink :href="route('books.show', data.id)">
 									<Button type="button" severity="secondary">
