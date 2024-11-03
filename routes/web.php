@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CountryController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Author;
@@ -22,17 +23,13 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard',[
-        'books' => Book::count(),
-        'authors' => Author::count(),
-        'categories' => Category::count(),
-        'author_books_count' => Author::withCount('books')->get(),
-    ]);
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
-    Route::get('/about', fn () => Inertia::render('About'))->name('about');
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+
+    Route::get('/about', fn() => Inertia::render('About'))->name('about');
 
     Route::get('users', [UserController::class, 'index'])->name('users.index');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -41,9 +38,9 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('authors', AuthorController::class);
     Route::resource('categories', CategoryController::class);
-    Route::resource('books', BookController::class)->except('update') ;
-    Route::post('books/{book}',[BookController::class, 'update'])->name('books.update');
+    Route::resource('books', BookController::class)->except('update');
+    Route::post('books/{book}', [BookController::class, 'update'])->name('books.update');
     Route::resource('countries', CountryController::class);
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
