@@ -219,6 +219,5 @@ const save = () => {
         </template>
       </Card>
     </template>
-    {{ form }}
   </AuthenticatedLayout>
 </template>
