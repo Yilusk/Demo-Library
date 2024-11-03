@@ -62,7 +62,6 @@ if (props.book != null) {
   form.publisher = props.book.publisher
   form.release_date = props.book.release_date
   form.pages = props.book.pages
-  form.image = props.book.image
   props.authorsOfBook.forEach(author => form.authors.push(author.id))
   props.categoriesOfBook.forEach(category => form.categories.push(category.id))
 }
@@ -220,5 +219,6 @@ const save = () => {
         </template>
       </Card>
     </template>
+    {{ form }}
   </AuthenticatedLayout>
 </template>
