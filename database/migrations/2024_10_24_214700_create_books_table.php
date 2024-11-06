@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('title',200);
             $table->string('description');
             $table->string('publisher',100);
+            $table->string('language',100);
+            $table->tinyInteger('volumen');
             $table->date('release_date');
             $table->smallInteger('pages');
             $table->string('image',100)->nullable();

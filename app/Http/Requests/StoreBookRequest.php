@@ -29,6 +29,8 @@ class StoreBookRequest extends FormRequest
             'publisher' => ['required','string','max:100'],
             'release_date' => ['required','date'],
             'pages' => ['required','numeric'],
+            'language' => ['required','string'],
+            'volumen' => ['required','numeric'],
             'image' => ['nullable','file','mimes:jpg,jpeg,png'],
             'authors' => ['nullable','array'],
             'categories' => ['nullable','array'],

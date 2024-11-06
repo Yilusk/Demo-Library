@@ -12,6 +12,14 @@ const props = defineProps({
   categories: Object
 
 })
+const formatDate = (date) => {
+  return new Date(date).toLocaleDateString('en-EN', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+}
+
 </script>
 
 <template>
@@ -69,11 +77,19 @@ const props = defineProps({
                   </p>
                   <p>
                     <strong>Release Date: </strong>
-                    {{ book.release_date }}
+                    {{ formatDate(book.release_date) }}
+                  </p>
+                  <p>
+                    <strong>Volumen: </strong>
+                    {{ book.volumen ?? '01' }}
                   </p>
                   <p>
                     <strong>Pages: </strong>
                     {{ book.pages }}
+                  </p>
+                  <p>
+                    <strong>Language: </strong>
+                    {{ book.language ?? 'N/A' }}
                   </p>
                   <p>
                     <strong>Categories: </strong>

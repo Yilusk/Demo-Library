@@ -57,6 +57,13 @@ const deleteBook = () => {
 		}
 	})
 }
+const formatDate = (date) => {
+  return new Date(date).toLocaleDateString('en-EN', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  });
+}
 </script>
 <template>
 	<Head title="Books" />
@@ -80,7 +87,11 @@ const deleteBook = () => {
 					</template>
 					<Column field="title" header="Title" />
 					<Column field="publisher" header="Publisher" />
-					<Column field="release_date" header="Release Date" />
+					<Column header="Release Date">
+					<template #body="{ data }">
+						{{ formatDate(data.release_date) }}
+					</template>
+					</Column>
 					<Column field="categories" header="Categories">
 						<template #body="{ data }">
 							<ScrollPanel style="width: 100%; height: 70px">

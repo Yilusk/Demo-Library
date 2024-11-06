@@ -16,6 +16,8 @@ class Book extends Model
         'description',
         'publisher',
         'release_date',
+        'language',
+        'volumen',
         'pages',
         'image',
     ];
@@ -34,9 +36,11 @@ class Book extends Model
     {
         $query->when($filters['search'] ?? null, function ($query, $search) {
             $query->where('title', 'like', '%' . $search . '%')
+                ->orWhere('isbn', 'like', '%' . $search . '%')
                 ->orWhere('publisher', 'like', '%' . $search . '%')
                 ->orWhere('release_date', 'like', '%' . $search . '%')
                 ->orWhere('pages', 'like', '%' . $search . '%')
+                ->orWhere('language', 'like', '%' . $search . '%')
                 ->orWhereHas('authors', function ($query) use ($search) {
                     $query->where('name', 'like', '%' . $search . '%');
                 })

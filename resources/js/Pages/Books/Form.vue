@@ -31,6 +31,8 @@ const form = useForm({
   publisher: '',
   release_date: '',
   pages: '',
+  language: '',
+  volumen: '',
   image: '',
   authors: [],
   categories: [],
@@ -62,6 +64,8 @@ if (props.book != null) {
   form.publisher = props.book.publisher
   form.release_date = props.book.release_date
   form.pages = props.book.pages
+  form.language = props.book.language
+  form.volumen = props.book.volumen
   props.authorsOfBook.forEach(author => form.authors.push(author.id))
   props.categoriesOfBook.forEach(category => form.categories.push(category.id))
 }
@@ -109,7 +113,7 @@ const save = () => {
         })
         src.value = null
         previousImage.value = props.book.image
-        
+
       }
     })
   }
@@ -181,6 +185,18 @@ const save = () => {
                 <InputError :message="form.errors.publisher" />
               </IftaLabel>
               <IftaLabel>
+                <InputText id="language" type="text" v-model="form.language" class="w-80 max-md:w-full max-lg:w-full"
+                  :invalid="form.errors.language" />
+                <label for="language">Language</label>
+                <InputError :message="form.errors.language" />
+              </IftaLabel>
+              <IftaLabel>
+                <InputText id="volumen" type="text" v-model="form.volumen" class="w-80 max-md:w-full max-lg:w-full"
+                  :invalid="form.errors.volumen" />
+                <label for="volumen">Volumen</label>
+                <InputError :message="form.errors.volumen" />
+              </IftaLabel>
+              <IftaLabel>
                 <MultiSelect v-model="form.categories" :options="categoryOptions" option-value="id"
                   option-label="category" id="id" placeholder="Select Category" :maxSelectedLabels="3" filter
                   class="w-80 max-md:w-full max-lg:w-full text-lg" />
@@ -191,7 +207,7 @@ const save = () => {
                   id="id" placeholder="Select Authors" :maxSelectedLabels="3" filter
                   class="w-80 max-md:w-full max-lg:w-full text-lg" />
                 <label for="authors">Authors</label>
-              </IftaLabel>
+              </IftaLabel> 
               <IftaLabel class="border border-gray-300 rounded">
                 <label for="cover">Book Cover</label>
                 <div
