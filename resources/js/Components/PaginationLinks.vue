@@ -8,7 +8,7 @@
           class="mb-1 mr-1 px-4 py-3 focus:text-indigo-500 text-lg text-slate-600 leading-4 hover:bg-white focus:border-indigo-500 rounded"
           :class="{ 'bg-indigo-100 rounded-full': link.active }" :href="link.url" v-html="makeLabel(link.label)" />
       </template>
-      <p class="text-slate-500 pt-3">
+      <p class="text-slate-500 pt-3" v-if="moreText">
         Showing {{ paginator.from }} to {{ paginator.to }} of {{ paginator.total }} results
       </p>
     </div>
@@ -20,7 +20,11 @@ import { Link } from '@inertiajs/vue3'
 
 const props = defineProps({
   links: Array,
-  paginator: Object
+  paginator: Object,
+  moreText: {
+    type: Boolean,
+    default: true
+  }
 })
 
 const makeLabel = (label) => {
