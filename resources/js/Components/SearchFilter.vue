@@ -22,9 +22,8 @@ import { router } from '@inertiajs/vue3';
 
 const props = defineProps({
 	searchTerm: String,
-  routeName: String
+  routeName: String,
 })
-
 
 const search = ref(props.searchTerm);
 
@@ -32,6 +31,5 @@ watch(
 	search,
 	debounce((q) => router.get(route(props.routeName), { search: q }, { preserveState: true, preserveScroll: true }), 500)
 )
-
 
 </script>
