@@ -28,6 +28,18 @@ const form = useForm({
 	country_id: ''
 })
 
+const countryForm = useForm({
+	country: '',
+})
+
+const formatDate = (date) => {
+  return new Date(date).toLocaleDateString('en-EN', {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric'
+  });
+}
+
 const search = ref(props.searchTerm)
 
 const toast = useToast()
@@ -35,6 +47,7 @@ const toast = useToast()
 const showDataModal = ref(false)
 const showFormModal = ref(false)
 const showDeleteModal = ref(false)
+const showNewCountryModal = ref(false)
 
 const title = ref('')
 const operation = ref(1)
@@ -122,7 +135,6 @@ const save = () => {
 	}
 }
 
-
 const deleteAuthor = () => {
 	form.delete(route('authors.destroy', values.value.id), {
 		onSuccess: () => {
@@ -136,6 +148,31 @@ const deleteAuthor = () => {
 		}
 	})
 }
+
+const openNewCountryModal = () => {
+	showNewCountryModal.value = true
+	countryForm.reset()
+}
+
+const closeNewCountryModal = () => {
+	showNewCountryModal.value = false
+	countryForm.reset()
+}
+
+const saveCountry = () => {
+	countryForm.post(route('countries.store'), {
+			onSuccess: () => {
+				toast.add({
+					severity: 'success',
+					summary: 'Country Added',
+					detail: `Country ${form.country} added`,
+					life: 3000
+				})
+				closeNewCountryModal()
+			}
+		})
+}
+
 </script>
 <template>
 
@@ -168,8 +205,6 @@ const deleteAuthor = () => {
 							No authors found
 						</p>
 					</template>
-
-
 					<Column field="name" header="Name" />
 					<Column field="last_name" header="Last Name" />
 					<Column field="country.country" header="Country" />
@@ -233,20 +268,24 @@ const deleteAuthor = () => {
 						<div v-for="book in values.books" :key="book.id">
 							<Fieldset :legend="book.title" :toggleable="true" :collapsed="true">
 								<p>
-									<span class="font-bold">Release Date: </span>
-									{{ book.release_date }}
-								</p>
-								<p>
 									<span class="font-bold">Publisher: </span>
 									{{ book.publisher }}
 								</p>
 								<p>
-									<span class="font-bold">Pages: </span>
-									{{ book.pages }}
+									<span class="font-bold">Release Date: </span>
+									{{ formatDate(book.release_date) }}
 								</p>
 								<p>
-									<span class="font-bold">Description: </span>
-									{{ book.description }}
+									<span class="font-bold">Language: </span>
+									{{ book.language ?? 'N/A' }}
+								</p>
+								<p>
+									<span class="font-bold">Volumen: </span>
+									{{ book.volumen ?? 'N/A' }}
+								</p>
+								<p>
+									<span class="font-bold">Pages: </span>
+									{{ book.pages }}
 								</p>
 							</Fieldset>
 						</div>
@@ -289,6 +328,13 @@ const deleteAuthor = () => {
 						<InputError :message="form.errors.country_id" />
 					</IftaLabel>
 				</div>
+				<!-- Country Not Found -->
+				<div class="mb-3">
+					<Button type="button" severity="secondary"  @click="openNewCountryModal">
+						Country Not Found?
+					</Button>
+
+				</div>
 				<!-- buttons -->
 				<div class="flex justify-end gap-2">
 					<Button type="button" label="Cancel" severity="secondary" @click="closeFormModal" />
@@ -297,6 +343,20 @@ const deleteAuthor = () => {
 			</form>
 		</Dialog>
 
+		<!-- Add Country -->
+		<Dialog v-model:visible="showNewCountryModal" modal header="Add New Country">
+			<form @submit.prevent="saveCountry">
+				<div class="flex items-center gap-4 mb-4">
+					<label for="country" class="font-semibold w-24">Country</label>
+					<InputText id="country" class="flex-auto" v-model="countryForm.country" :invalid="countryForm.errors.country" autofocus />
+				</div>
+				<InputError :message="countryForm.errors.country" />
+				<div class="flex justify-end gap-2">
+					<Button type="button" label="Cancel" severity="secondary" @click="closeNewCountryModal" />
+					<Button type="submit" label="Save" :disabled="countryForm.processing" />
+				</div>
+			</form>
+		</Dialog>
 
 		<!-- show Delete Modal -->
 		<Dialog v-model:visible="showDeleteModal" modal header="Delete Auhtor">
