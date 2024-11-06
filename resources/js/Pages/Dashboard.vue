@@ -7,7 +7,6 @@ import Divider from 'primevue/divider';
 import { ref } from 'vue';
 
 const props = defineProps({
-	// count
 	books: Number,
 	authors: Number,
 	categories: Number,
@@ -52,7 +51,6 @@ charData.value = {
 		<template #header>
 			Dashboard
 		</template>
-		<!-- possible chart for auhtor with more books -->
 		<div class="p-4 bg-white rounded-lg shadow-xs">
 			<div class="grid gap-6  md:grid-cols-2 xl:grid-cols-3">
 				<Card class="w-full text-center" style="background-color: palegoldenrod">

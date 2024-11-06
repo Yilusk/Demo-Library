@@ -12,9 +12,7 @@ use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index(Request $request)
     {
         $search = request()->search ?? '';
@@ -40,9 +38,6 @@ class BookController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $authors = Author::select('id', 'name', 'last_name')->get();
@@ -50,14 +45,11 @@ class BookController extends Controller
         return inertia('Books/Create', compact('authors', 'categories'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreBookRequest $request)
     {
         // validate
         $data = $request->validated();
-
+        
         // check if image is uploaded
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('images', 'public');
@@ -73,9 +65,6 @@ class BookController extends Controller
         return back();
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Book $book)
     {
         return inertia('Books/Show', [
@@ -85,9 +74,6 @@ class BookController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Book $book)
     {
         return inertia('Books/Edit', [
@@ -99,9 +85,6 @@ class BookController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateBookRequest $request, Book $book)
     {
         // validate
@@ -110,7 +93,6 @@ class BookController extends Controller
         // mantain image
         $data['image'] = $book->image;
 
-        
         // check if image is uploaded
         if ($request->file('image')) {
             // delete old image
@@ -120,21 +102,16 @@ class BookController extends Controller
             $data['image'] = $request->file('image')->store('images', 'public');
         }
 
-
         // update
         $book->update($data);
         // sync
         $book->authors()->sync($data['authors']);
         $book->categories()->sync($data['categories']);
 
-
         // redirect
         return to_route('books.edit', $book);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Book $book)
     {
         $book->delete();

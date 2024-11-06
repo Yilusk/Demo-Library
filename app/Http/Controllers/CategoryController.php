@@ -9,9 +9,6 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $search = request()->search ?? '';
@@ -32,10 +29,6 @@ class CategoryController extends Controller
         ]);
     }
 
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreCategoryRequest $request)
     {
         // validate
@@ -46,10 +39,6 @@ class CategoryController extends Controller
         return back();
     }
 
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
         // validate
@@ -60,9 +49,6 @@ class CategoryController extends Controller
         return back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Category $category)
     {
         $category->delete();

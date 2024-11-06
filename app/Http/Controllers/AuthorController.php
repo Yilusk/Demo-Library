@@ -10,9 +10,6 @@ use Illuminate\Http\Request;
 
 class AuthorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $search = request()->search ?? '';
@@ -20,7 +17,7 @@ class AuthorController extends Controller
 
         $authors = Author::query()
             ->with('country:id,country',
-            'books:id,title,description,publisher,release_date,pages')
+            'books:id,title,publisher,release_date,pages,language,volumen')
             ->orderBy('created_at','desc')
             ->filter(request()->only('search'))
             ->paginate(5)
@@ -40,9 +37,6 @@ class AuthorController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreAuthorRequest $request)
     {
         // validate
@@ -53,9 +47,6 @@ class AuthorController extends Controller
         return back();
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateAuthorRequest $request, Author $author)
     {
         // validate
@@ -66,9 +57,6 @@ class AuthorController extends Controller
         return back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Author $author)
     {
         $author->delete();
