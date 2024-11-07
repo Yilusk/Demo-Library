@@ -33,6 +33,35 @@ Install the npm dependencies:
 ```bash
 npm install
 ```
+## Important
+
+* Create a .env file and copy all from **.env.example**
+
+Generate a new key application
+
+```bash
+php artisan key:generate
+```
+
+Use the command to make the default sqlite database or change the .env values to use the one you want [ MySql, Postgres, Etc.. ]
+
+```bash
+php artisan migrate:install
+```
+
+Run the migrations
+
+```bash
+php artisan migrate
+```
+
+
+Create the symbolic links to make use of images
+
+```bash
+php artisan storage:link
+```
+
 
 ## Run Locally
 
